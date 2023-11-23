@@ -1,0 +1,47 @@
+nav ul {
+    margin: 0 20px;
+    padding: 0;
+    font-size: larger;
+    
+}
+nav li{
+    display: inline-block;
+    border: outset;
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color:rgba(180, 7, 7, 0.404)
+    
+
+}
+
+nav li a{
+  color: rgb(253, 215, 0);
+}
+
+.obrazek{
+    margin-left: auto;
+    width: 100px;
+  }
+
+.jidlo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+  }
+
+body
+  {
+    background-color:rgba(79, 45, 110, 0.473);
+    margin-left: 150px;
+    margin-right: 150px;
+    font-size: large;
+
+  }
+.nadpis{
+  display: inline-block;
+  margin-left: 300px;
+
+
+}

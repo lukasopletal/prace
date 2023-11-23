@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <title>{%block title%}Domovska stranka{%endblock%}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<h1 class="nadpis">
+  <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename= 'smajlik.png')}}" alt="", class="obrazek"></a>
+  Nejlepší jídla na světě
+  <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename= 'smajlik.png')}}" alt="", class="obrazek"></a>
+</h1>
+
+
+
+    
+    <nav>
+        <ul>
+          <div class="menu"></div>
+            <li><a href="{{ url_for('index') }}">Domovská stránka</a></li>
+            <li><a href="{{ url_for('kari') }}">Kari</a></li>
+            <li><a href="{{ url_for('hamburger') }}">Hamburger</a></li>
+            <li><a href="{{ url_for('lazane') }}">Lazane</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% if 'user' in session %}
+            <li><a href="{{ url_for('admin') }}">Admin</a></li>
+            {% endif %}
+          </div> 
+        </ul>
+        </nav>
+
+{% if 'user' in session %}
+Uživatel: {{session['user']}} 
+<a href="{{ url_for( 'logout') }}">Logout</a> 
+{% else %}
+Nikdo není přihlášen
+{% endif %}
+
+
+
+{% for category, messsage in get_flashed_messages(with_categories = True) %}
+<p class="message {{ category }}">{{ messsage }}</p>
+{% endfor %}
+
+
+
+{% block obsah %}
+
+
+
+
+<h2>Co je to jídlo?</h2>
+<p>
+Potravina, také jídlo je výrobek nebo látka určená pro výživu lidí a konzumovaná ústy v nezměněném, syrovém, anebo upraveném stavu.
+
+Jde o všechny základní poživatiny, látky obsahující živiny, produkty rostlinné nebo živočišné výroby zemědělství určené pro lidskou výživu. Obsahují živiny jako jsou sacharidy, tuky, proteiny, vitamín nebo minerální látky. Požité živiny jsou v lidském těle vstřebávány buňkami a využity k produkci energie, udržování životních funkcí a podpoře jeho růstu.
+
+
+</p>
+
+{% endblock obsah %}
+
+</body>

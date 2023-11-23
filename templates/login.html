@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{%block title%}Login{%endblock%}
+
+{% block obsah %}
+
+
+<h1>Login</h1>
+
+<form method="post">
+<table>
+    <tr>
+        <td> jmeno:</td> 
+        <td><input type="text" name="jmeno" placeholder="zadejte jméno"></td>
+   
+    </tr>
+     <tr>
+        <td> heslo:</td> 
+        <td><input type="password" name="heslo" placeholder="zadejte heslo"></td>
+   
+    </tr>
+    <tr>
+        <td></td>
+        <td><button>přihlásit</button></td>
+    </tr>
+</table>
+
+
+
+</form>
+
+
+{% endblock obsah %}
