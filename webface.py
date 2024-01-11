@@ -1,6 +1,8 @@
 
 from flask import Flask, render_template, request, redirect, url_for, session, Markup, flash
 import functools
+from sqlitewrap import SQLite
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = b"totoj e zceLa n@@@hodny retezec nejlep os.urandom(24)"
@@ -34,13 +36,46 @@ def lazane():
 
 
 
-@app.route("/admin", methods=["GET"])
+@app.route("/vzkazy", methods=["GET"])
 def admin():
     if 'user' in session:
         return render_template("admin.html")
     else:
         return redirect(url_for("login"))
 
+
+
+
+
+
+
+@app.route("/register/", methods=["GET"])
+def register():
+    return render_template("register.html")
+
+@app.route("/register/", methods=["POST"])
+def register_post():
+    jmeno = request.form.get("jmeno","")
+    heslo1 = request.form.get("heslo1","")
+    heslo2 = request.form.get("heslo2","")
+    if len(heslo1) < 5:
+        flash("Heslo musí mít aspoň 5 znaků", "error")
+        return redirect(url_for("register"))
+    if len(jmeno) < 5:
+        flash("Jmeno musí mít aspoň 5 znaků", "error")
+        return redirect(url_for("register"))
+    if heslo1 != heslo2:
+        flash("musíte zadat stejné heslo", "error")
+        return redirect(url_for("register"))
+    
+    hash_ = generate_password_hash(heslo1)
+    try:
+        with SQLite("db.sqlite") as cursor:
+            cursor.execute('INSERT INTO user(user,password) VALUES(?,?)', [jmeno, hash_])
+            flash(f"uživatel {jmeno} byl přidán", "success")
+    except:
+        flash("Uživatle už jednou existuje", "error")
+    return redirect(url_for("register"))
 
 
 
@@ -59,16 +94,20 @@ def login_post():
     jmeno = request.form.get('jmeno','')
     heslo = request.form.get('heslo','')
     url=request.args.get("url", "") 
-    if jmeno and heslo == "12345":
-        flash("Jsi přihlášen!", "success")
-        session["user"] = jmeno
-        if url:
-            return redirect(url)
-        else:
-            return redirect(url_for("index"))
-    else:
+    with SQLite("db.sqlite") as cursor:
+        response = cursor.execute("SELECT user, password FROM user WHERE user = ?", [jmeno]) 
+        response = response.fetchone()
+        if response:
+            user, password = response
+            if check_password_hash(password, heslo):
+                flash("Jsi přihlášen!", "success")
+                session["user"] = jmeno
+                if url:
+                    return redirect(url) 
+                else:
+                    return redirect(url_for("index"))
         flash("Nesprávné přihlašovací údaje", "error")
-    return redirect(url_for("login", url=url))
+        return redirect(url_for("login", url=url))
 
 @app.route("/logout/")
 def logout():

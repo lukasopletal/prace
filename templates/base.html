@@ -26,8 +26,9 @@
             <li><a href="{{ url_for('hamburger') }}">Hamburger</a></li>
             <li><a href="{{ url_for('lazane') }}">Lazane</a></li>
             <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('register') }}">Register</a></li>
             {% if 'user' in session %}
-            <li><a href="{{ url_for('admin') }}">Admin</a></li>
+            <li><a href="{{ url_for('admin') }}">Vzkazy</a></li>
             {% endif %}
           </div> 
         </ul>
