@@ -3,13 +3,22 @@
 {%block title%}Admin{%endblock%}
 
 {% block obsah %}
+<h1>Vzkazy</h1>
+<form method="post">
+    <p>
+        <h2>Vložit vzkaz</h2>
+        <textarea name="vzkaz" id="?" cols="80" rows="7"></textarea>
+    </p>
+    <button type="submit">Odeslat</button>
+    <button type="submit">Vymazat</button>
+</form>
 
+<h2>Nástěnka</h2>
 
+{% for login, body, datetime in response %}
+    <p>((login)) ((body)) ((datetime))</p>
 
-
-
-
-
+{% endfor %}
 
 
 {% endblock obsah %}

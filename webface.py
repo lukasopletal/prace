@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, M
 import functools
 from sqlitewrap import SQLite
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 
 app = Flask(__name__)
 app.secret_key = b"totoj e zceLa n@@@hodny retezec nejlep os.urandom(24)"
@@ -38,10 +39,27 @@ def lazane():
 
 @app.route("/vzkazy", methods=["GET"])
 def admin():
-    if 'user' in session:
-        return render_template("admin.html")
-    else:
-        return redirect(url_for("login"))
+    if 'user' not in session:
+        return redirect(url_for("index"))
+    with SQLite("db.sqlite") as cursor:
+        response = cursor.execute("SELECT user, body, datetime FROM user JOIN message ON user.id = message.user_id ORDER BY datetime")
+        response = response.fetchall() 
+       
+    return render_template("admin.html", response=response)
+    
+
+@app.route("/vzkazy", methods=["POST"])
+def admin_post():
+    with SQLite("db.sqlite") as cursor:
+        response = cursor.execute("SELECT id FROM user WHERE user=?",[session["user"]])
+        response = response.fetchone()
+        user_id = list(response)[0]
+    vzkaz = request.form.get('vzkaz')
+    if vzkaz:
+        with SQLite("db.sqlite") as cursor:
+            cursor.execute('INSERT INTO message(user_id,body, datetime) VALUES(?,?,?)', [user_id, vzkaz, datetime.datetime.now()])
+    
+    return redirect(url_for("admin"))
 
 
 
