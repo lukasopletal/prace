@@ -15,8 +15,17 @@
 
 <h2>Nástěnka</h2>
 
-{% for login, body, datetime in response %}
-    <p>((login)) ((body)) ((datetime))</p>
+{% for login, body, datetime, id in response %}
+    <div class="vzkaz">
+        <p class="hlava"> Jméno uživatele: <strong>{{login}}</strong> Datum: {{d.fromisoformat(datetime).strftime('%d.%_m.%Y %H:%M')}} </p><pre class="telo"> Zpráva: {{body}}</pre>
+    {% if session['user'] == login  %}
+        
+        <form action="">
+            <input type="hidden" name="Id", value="{{id}}">
+            <button type="submit">Vymazat</button>
+        </form>
+    {% endif %}
+    </div>
 
 {% endfor %}
 

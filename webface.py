@@ -42,10 +42,10 @@ def admin():
     if 'user' not in session:
         return redirect(url_for("index"))
     with SQLite("db.sqlite") as cursor:
-        response = cursor.execute("SELECT user, body, datetime FROM user JOIN message ON user.id = message.user_id ORDER BY datetime")
+        response = cursor.execute("SELECT user, body, datetime, message.id FROM user JOIN message ON user.id = message.user_id ORDER BY datetime")
         response = response.fetchall() 
        
-    return render_template("admin.html", response=response)
+    return render_template("admin.html", response=response, d=datetime.datetime)
     
 
 @app.route("/vzkazy", methods=["POST"])

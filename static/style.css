@@ -45,3 +45,15 @@ body
 
 
 }
+
+.vzkaz {
+  background-color: whitesmoke;
+  padding:  1ex;
+  margin: 1ex 0ex 2ex;
+  border-radius: green 1px solid;
+
+}
+
+.vzkaz .telo {
+  margin-left: 4em;
+}
